@@ -12,6 +12,7 @@ public class UserBOImpl implements UserBO {
     QueryDAO queryDAO = (QueryDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.QUERY);
    @Override
     public boolean checkUser(String userName,String password) throws SQLException, ClassNotFoundException {
+       System.out.println();
        return queryDAO.auth(userName,password);
    }
 }
