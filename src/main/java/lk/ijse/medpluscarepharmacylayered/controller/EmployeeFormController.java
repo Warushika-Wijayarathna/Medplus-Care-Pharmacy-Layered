@@ -1,0 +1,457 @@
+package lk.ijse.medpluscarepharmacylayered.controller;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import lk.ijse.medpluscarepharmacylayered.bo.BOFactory;
+import lk.ijse.medpluscarepharmacylayered.bo.custom.EmployeeBO;
+import lk.ijse.medpluscarepharmacylayered.bo.custom.UserBO;
+import lk.ijse.medpluscarepharmacylayered.dto.EmployeeDTO;
+import lk.ijse.medpluscarepharmacylayered.dto.UserDTO;
+import lk.ijse.medpluscarepharmacylayered.util.Regex;
+import lk.ijse.medpluscarepharmacylayered.util.TextField;
+import lk.ijse.medpluscarepharmacylayered.view.tm.EmployeeTm;
+import lk.ijse.medpluscarepharmacylayered.view.tm.UserTm;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+public class EmployeeFormController {
+    public JFXTextField employeeNameTxt;
+    public JFXTextField positionTxt;
+    public JFXTextField addressTxt;
+    public JFXTextField contactNo;
+    public JFXTextField salaryTxt;
+    public CheckBox usrCheckBox;
+    public JFXTextField usernameTxt;
+    public JFXPasswordField passwordTxt;
+    public JFXPasswordField reEnterTxt;
+
+    public JFXButton addBtn;
+    public Label usrLbl;
+    public Label passwordLbl;
+    public Label reEnterLbl;
+    @FXML
+    public TableColumn <?,?>colId;
+    public TableColumn <?,?>colName;
+    public TableColumn <?,?>colPosition;
+    public TableColumn <?,?>colAddress;
+    public TableColumn <?,?>colContact;
+    public TableColumn <?,?>colSalary;
+    public TableColumn <?,?>colUser;
+    public TableView <EmployeeTm>employeeTable;
+    public TableColumn <?,?>colEmAction;
+    public TableView <UserTm>usrTable;
+    public TableColumn <?,?>colUserId;
+    public TableColumn <?,?>colUserName;
+    public TableColumn <?,?>colPassword;
+    public TableColumn <?,?>colUsrAction;
+    public TableColumn <?,?>colEmDelete;
+    public TableColumn <?,?>colEmUpdate;
+    public TableColumn <?,?>colUsrUpdate;
+    public TableColumn <?,?>colUsrDelete;
+    ObservableList<EmployeeTm> observableList = FXCollections.observableArrayList();
+    ObservableList<UserTm> obList = FXCollections.observableArrayList();
+
+    private EmployeeTm selectedEmployee;
+    private UserTm selectedUser;
+
+    UserBO userBo = (UserBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.USER);
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.EMPLOYEE);
+    public void initialize() {
+
+        setCellValueFactory();
+        loadAllEmployees();
+        loadAllUsers();
+        setFieldOpacity(false);
+        setTextFieldEditable(false);
+
+        usrCheckBox.setOnAction(event -> {
+            boolean isSelected = usrCheckBox.isSelected();
+            setFieldOpacity(isSelected);
+            setTextFieldEditable(isSelected);
+        });
+
+        Platform.runLater(() -> {
+            employeeNameTxt.requestFocus();
+            employeeNameTxt.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER){
+                    positionTxt.requestFocus();
+                }
+            });
+            positionTxt.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER){
+                    addressTxt.requestFocus();
+                }
+            });
+            addressTxt.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER){
+                    contactNo.requestFocus();
+                }
+            });
+            contactNo.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER){
+                    salaryTxt.requestFocus();
+                }
+            });
+            salaryTxt.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER){
+                    usrCheckBox.requestFocus();
+                }
+            });
+            if (usrCheckBox.isSelected()) {
+                usernameTxt.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER){
+                        passwordTxt.requestFocus();
+                    }
+                });
+                passwordTxt.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER){
+                        reEnterTxt.requestFocus();
+                    }
+                });
+                reEnterTxt.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.ENTER){
+                        addBtn.requestFocus();
+                    }
+                });
+            }
+
+        });
+    }
+
+    public void loadAllUsers() {
+        obList.clear();
+        try {
+            List<UserDTO> userList = userBo.getAllUsers();
+            for (UserDTO user : userList) {
+                ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/icon/Untitled design (44).png")));
+                updateIcon.setFitWidth(20);
+                updateIcon.setFitHeight(20);
+
+                JFXButton updateButton = new JFXButton();
+                updateButton.setGraphic(updateIcon);
+                updateButton.setOnAction(event -> handleUpdateUser(user));
+
+                UserTm userTm = new UserTm(
+                        user.getUserId(),
+                        user.getUserName(),
+                        user.getPassword(),
+                        updateButton
+                );
+                obList.add(userTm);
+            }
+            usrTable.setItems(obList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void handleUpdateUser(UserDTO user) {
+        openUpdateUserForm();
+    }
+
+    private void openUpdateUserForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/update_usr_form.fxml"));
+            Parent root = loader.load();
+
+            UpdateUsrFormController controller = loader.getController();
+
+            if (selectedUser != null) {
+                controller.setUsrData(selectedUser);
+            }
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Update User");
+            stage.show();
+
+            stage.getScene().setUserData(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadAllEmployees() {
+        observableList.clear();
+        try {
+            List<EmployeeDTO> employeeList = employeeBO.getAllEmployees();
+            for (EmployeeDTO employee : employeeList) {
+                ImageView updateIcon = new ImageView(new Image(getClass().getResourceAsStream("/icon/Untitled design (44).png")));
+                updateIcon.setFitWidth(20);
+                updateIcon.setFitHeight(20);
+
+                JFXButton updateButton = new JFXButton();
+                updateButton.setGraphic(updateIcon);
+                updateButton.setOnAction(event -> handleUpdateEmployee(employee));
+
+                EmployeeTm employeeTm = new EmployeeTm(
+                        employee.getEmployeeId(),
+                        employee.getName(),
+                        employee.getPosition(),
+                        employee.getAddress(),
+                        employee.getContactNo(),
+                        employee.getSalary(),
+                        employee.getUserId(),
+                        updateButton
+                );
+                observableList.add(employeeTm);
+            }
+            employeeTable.setItems(observableList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void handleUpdateEmployee(EmployeeDTO employee) {
+        openUpdateEmployeeForm();
+    }
+
+
+    private void openUpdateEmployeeForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/update_em_form.fxml"));
+            Parent root = loader.load();
+
+            UpdateEmFormController controller = loader.getController();
+
+            if (selectedEmployee != null) {
+                controller.setEmployeeData(selectedEmployee);
+            }
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Update Employee");
+            stage.show();
+
+            stage.getScene().setUserData(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCellValueFactory() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colPosition.setCellValueFactory(new PropertyValueFactory<>("position"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colContact.setCellValueFactory(new PropertyValueFactory<>("contactNo"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colUser.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        colEmUpdate.setCellValueFactory(new PropertyValueFactory<>("update"));
+
+
+        colUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        colUserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colUsrUpdate.setCellValueFactory(new PropertyValueFactory<>("update"));
+    }
+
+    private void setTextFieldEditable(boolean isEditable) {
+        usernameTxt.setEditable(isEditable);
+        passwordTxt.setEditable(isEditable);
+        reEnterTxt.setEditable(isEditable);
+    }
+    private void setFieldOpacity(boolean isVisible) {
+        double opacity = isVisible ? 1.0 : 0.5;
+        usernameTxt.setOpacity(opacity);
+        passwordTxt.setOpacity(opacity);
+        reEnterTxt.setOpacity(opacity);
+        usrLbl.setOpacity(opacity);
+        passwordLbl.setOpacity(opacity);
+        reEnterLbl.setOpacity(opacity);
+    }
+
+
+    public void addBtnClickOnAction(ActionEvent actionEvent) {
+
+        boolean isUserRequired = usrCheckBox.isSelected();
+        boolean isUserFilled = !usernameTxt.getText().isEmpty() && !passwordTxt.getText().isEmpty() && !reEnterTxt.getText().isEmpty();
+
+
+
+
+        if (isUserRequired && isUserFilled) {
+            try {
+                String username = usernameTxt.getText();
+                String password = passwordTxt.getText();
+
+                if (!Regex.isTextFieldValid(TextField.NAME, username)) {
+                    new Alert(Alert.AlertType.ERROR, "Invalid username").show();
+                    usernameTxt.requestFocus();
+                    return;
+                }
+                if (!Regex.isTextFieldValid(TextField.PASSWORD, password)) {
+                    new Alert(Alert.AlertType.ERROR, "Invalid password").show();
+                    passwordTxt.requestFocus();
+                    return;
+                }
+                userBo.saveUser(new UserDTO(username, password));
+                String userId = userBo.getIdByUsername(username);
+
+                saveEmployee(userId);
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            saveEmployee(null);
+        }
+    }
+
+    private void saveEmployee(String  userId) {
+        if (!Regex.isTextFieldValid(TextField.NAME, employeeNameTxt.getText())) {
+            new Alert(Alert.AlertType.ERROR, "Invalid employee name").show();
+            employeeNameTxt.requestFocus();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextField.POSITION, positionTxt.getText())) {
+            new Alert(Alert.AlertType.ERROR, "Invalid position").show();
+            positionTxt.requestFocus();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextField.ADDRESS, addressTxt.getText())) {
+            new Alert(Alert.AlertType.ERROR, "Invalid address").show();
+            addressTxt.requestFocus();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextField.CONTACT, contactNo.getText())) {
+            new Alert(Alert.AlertType.ERROR, "Invalid contact number").show();
+            contactNo.requestFocus();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextField.SALARY, salaryTxt.getText())) {
+            new Alert(Alert.AlertType.ERROR, "Invalid salary").show();
+            salaryTxt.requestFocus();
+            return;
+        }
+        try {
+            if (userId == null) {
+                employeeBO.saveEmployee(new EmployeeDTO(
+                        employeeNameTxt.getText(),
+                        positionTxt.getText(),
+                        addressTxt.getText(),
+                        contactNo.getText(),
+                        Double.parseDouble(salaryTxt.getText()),
+                        null
+                ));
+            } else {
+                employeeBO.saveEmployee(new EmployeeDTO(
+                        employeeNameTxt.getText(),
+                        positionTxt.getText(),
+                        addressTxt.getText(),
+                        contactNo.getText(),
+                        Double.parseDouble(salaryTxt.getText()),
+                        userId
+                ));
+            }
+
+            observableList.clear();
+            loadAllEmployees();
+            loadAllUsers();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void onUsrMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 1) {
+            int selectedIndex = usrTable.getSelectionModel().getSelectedIndex();
+            if (selectedIndex >= 0) {
+                selectedUser = usrTable.getItems().get(selectedIndex);
+            }
+        }
+    }
+
+
+    public void onEmMouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 1) {
+            int selectedIndex = employeeTable.getSelectionModel().getSelectedIndex();
+            if (selectedIndex >= 0) {
+                selectedEmployee = employeeTable.getItems().get(selectedIndex);
+            }
+        }
+    }
+
+    public void onEmNameKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.NAME, employeeNameTxt);
+    }
+
+    public void onPositionKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.POSITION, positionTxt);
+    }
+
+    public void onAddressKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.ADDRESS, addressTxt);
+    }
+
+    public void onContactKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.CONTACT, contactNo);
+    }
+
+    public void onSalaryKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.SALARY, salaryTxt);
+    }
+
+    public void onUsrKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.NAME, usernameTxt);
+    }
+
+    public void onPasswordKeyReleased(KeyEvent keyEvent) {
+        Regex.setTextColor(TextField.PASSWORD, passwordTxt);
+    }
+
+    public void onReEnterKeyReleased(KeyEvent keyEvent) {
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("Should match with password");
+
+        if (passwordTxt.getText().equals(reEnterTxt.getText())) {
+            reEnterTxt.setFocusColor(javafx.scene.paint.Paint.valueOf("Green"));
+            reEnterTxt.setUnFocusColor(javafx.scene.paint.Paint.valueOf("Green"));
+        } else {
+            reEnterTxt.setFocusColor(javafx.scene.paint.Paint.valueOf("Red"));
+            reEnterTxt.setUnFocusColor(javafx.scene.paint.Paint.valueOf("Red"));
+
+            reEnterTxt.getValidators().add(validator);
+            reEnterTxt.focusedProperty().addListener((o, oldVal, newVal) -> {
+                if (!newVal) {
+                    reEnterTxt.validate();
+                }
+            });
+        }
+    }
+}
+

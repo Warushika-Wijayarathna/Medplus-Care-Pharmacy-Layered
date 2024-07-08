@@ -22,7 +22,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public boolean add(Customer entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO Customer (cust_id,name, contact_no, email) VALUES (?,?,?,?)", entity.getCustomerId(), entity.getName(), entity.getContactNo(), entity.getEmail());
+        return SQLUtil.execute("INSERT INTO Customer (name, contact_no, email) VALUES (?,?,?)", entity.getName(), entity.getContactNo(), entity.getEmail());
     }
 
     @Override
@@ -37,7 +37,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT CONCAT('C', LPAD(next_id, 4, '0')) FROM AutoIncrement_Customer");
+        ResultSet resultSet = SQLUtil.execute("SELECT CONCAT('C', LPAD(next_id, 4, '0')) FROM AutoIncrement_Customer");
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        return null;
     }
 
     @Override

@@ -8,13 +8,14 @@ import lk.ijse.medpluscarepharmacylayered.dto.SupplierDTO;
 import lk.ijse.medpluscarepharmacylayered.entity.Supplier;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierBOImpl implements SupplierBO {
     SupplierDAO supplierDAO = (SupplierDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.SUPPLIER);
     @Override
     public List<SupplierDTO> getAllSuppliers() throws SQLException, ClassNotFoundException {
-        List<SupplierDTO> supplierDTOS = null;
+        List<SupplierDTO> supplierDTOS = new ArrayList<>();
         List<Supplier> suppliers = supplierDAO.getAll();
 
         for (Supplier supplier : suppliers) {
@@ -44,8 +45,4 @@ public class SupplierBOImpl implements SupplierBO {
         return supplierDAO.generateNewID();
     }
 
-    @Override
-    public boolean checkUser(String username, String password) throws SQLException, ClassNotFoundException {
-        return false;
-    }
 }

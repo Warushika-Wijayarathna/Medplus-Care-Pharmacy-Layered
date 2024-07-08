@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane onKeyPressed="#onFKeyPressed" prefHeight="841.0" prefWidth="1544.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacy.controller.TestFormController">
+<AnchorPane onKeyPressed="#onFKeyPressed" prefHeight="841.0" prefWidth="1544.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacylayered.controller.TestFormController">
    <children>
       <TableView fx:id="testTable" layoutX="55.0" layoutY="435.0" onMouseClicked="#onMouseClickAction" prefHeight="371.0" prefWidth="1463.0">
          <columns>

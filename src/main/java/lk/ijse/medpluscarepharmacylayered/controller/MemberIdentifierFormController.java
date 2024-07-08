@@ -18,7 +18,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.medpluscarepharmacylayered.bo.BOFactory;
+import lk.ijse.medpluscarepharmacylayered.bo.custom.QueryBO;
 import lk.ijse.medpluscarepharmacylayered.bo.custom.UserBO;
+import lk.ijse.medpluscarepharmacylayered.dao.custom.QueryDAO;
 
 import java.sql.SQLException;
 
@@ -32,7 +34,7 @@ public class MemberIdentifierFormController {
     public JFXToggleButton showToggleBtn;
     public AnchorPane rootNode;
 
-    UserBO userBO = (UserBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.USER);
+    QueryBO queryBO = (QueryBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.QUERY);
 
     public void initialize(){
         showToggleBtn.setOnAction(this::showToggleBtnClickOnAction);
@@ -73,7 +75,7 @@ public class MemberIdentifierFormController {
 
         boolean isUserVerified = false;
         try {
-            isUserVerified = userBO.checkUser(username, password);
+            isUserVerified = queryBO.checkUser(username, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

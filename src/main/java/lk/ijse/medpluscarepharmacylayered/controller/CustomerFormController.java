@@ -391,7 +391,9 @@ public class CustomerFormController {
             }
             loadAllCustomers();
             custTxt.requestFocus();
-            new Alert(Alert.AlertType.CONFIRMATION, "Customer added successfully!").showAndWait();
+            Platform.runLater(()->{
+                new Alert(Alert.AlertType.CONFIRMATION, "Customer added successfully!").showAndWait();
+            });
 
         } catch (NumberFormatException e) {
             new Alert(Alert.AlertType.ERROR, "Invalid contact number!").showAndWait();

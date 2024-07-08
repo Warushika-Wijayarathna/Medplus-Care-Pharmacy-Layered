@@ -6,8 +6,5 @@ import lk.ijse.medpluscarepharmacylayered.bo.custom.OrderBO;
 import java.sql.SQLException;
 
 public class OrderBOImpl implements OrderBO {
-    @Override
-    public boolean checkUser(String username, String password) throws SQLException, ClassNotFoundException {
-        return false;
-    }
+
 }

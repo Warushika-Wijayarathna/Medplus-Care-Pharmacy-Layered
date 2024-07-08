@@ -12,10 +12,6 @@ import java.util.List;
 
 public class CustomerBOImpl implements CustomerBO {
     CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.CUSTOMER);
-    @Override
-    public boolean checkUser(String username, String password) throws SQLException, ClassNotFoundException {
-        return false;
-    }
 
     @Override
     public List<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {

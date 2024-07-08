@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="448.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacy.controller.UpdateUsrFormController">
+<AnchorPane prefHeight="448.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacylayered.controller.UpdateUsrFormController">
    <children>
       <Label fx:id="usrLbl" layoutX="39.0" layoutY="42.0" prefHeight="44.0" prefWidth="291.0" text="Username">
          <font>
