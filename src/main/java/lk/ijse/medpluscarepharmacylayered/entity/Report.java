@@ -11,8 +11,8 @@ import java.time.LocalDate;
 @Data
 
 public class Report {
-    private String custId;
     private String reportId;
+    private String custId;
     private String testId;
     private String result;
     private LocalDate issueDate;
