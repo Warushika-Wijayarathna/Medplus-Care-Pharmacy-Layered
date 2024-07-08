@@ -17,13 +17,13 @@ public class Regex {
                 filed = "^([A-Z][0-9]{3})$";
                 break;
             case NAME:
-                filed = "^[a-zA-Z]+$";
+                filed = ".*";
                 break;
             case EMAIL:
                 filed = "^([A-z])([A-z0-9.]){1,}[@]([A-z0-9]){1,10}[.]([A-z]){2,5}$";
                 break;
             case ADDRESS:
-                filed = "^[A-z|\\\\s]{3,}$";
+                filed = ".*";
                 break;
             case CONTACT:
                 filed = "^([0-9]){10}$";
@@ -32,13 +32,13 @@ public class Regex {
                 filed = "^([0-9]){9}[V|v]$";
                 break;
             case SALARY:
-                filed = "^([0-9]){1,}$";
+                filed = "^([0-9]{1,}[.][0-9]{1,})$";
                 break;
             case AGE:
                 filed = "^([0-9]){1,2}$";
                 break;
             case POSITION:
-                filed = "^[a-zA-Z]+$";
+                filed = ".*";
                 break;
             case PASSWORD:
                 filed = "^[a-zA-Z0-9]+$";

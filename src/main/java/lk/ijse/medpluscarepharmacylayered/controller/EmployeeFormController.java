@@ -402,6 +402,7 @@ public class EmployeeFormController {
             int selectedIndex = employeeTable.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {
                 selectedEmployee = employeeTable.getItems().get(selectedIndex);
+
             }
         }
     }

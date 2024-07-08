@@ -142,7 +142,9 @@ public class UpdateEmFormController {
         );
 
         try {
-            EmployeeRepo.update(employee);
+            System.out.println("Employee Updated!");
+            employeeBO.updateEmployee(employee);
+            System.out.println("Employee Updated!");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Employee Updated!");
             Optional<ButtonType> result = alert.showAndWait();
             result.ifPresent(buttonType -> {
@@ -153,6 +155,8 @@ public class UpdateEmFormController {
 
             ((EmployeeFormController) employeeNameTxt.getScene().getUserData()).loadAllEmployees();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

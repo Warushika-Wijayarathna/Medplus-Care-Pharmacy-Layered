@@ -7,6 +7,7 @@ import lk.ijse.medpluscarepharmacylayered.dto.EmployeeDTO;
 import lk.ijse.medpluscarepharmacylayered.entity.Employee;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeBOImpl implements EmployeeBO {
@@ -14,11 +15,11 @@ public class EmployeeBOImpl implements EmployeeBO {
 
     @Override
     public List<EmployeeDTO> getAllEmployees() throws SQLException, ClassNotFoundException {
-        List<EmployeeDTO> allEmployees = null;
+        List<EmployeeDTO> allEmployees = new ArrayList<>();
         List<Employee> employees = employeeDAO.getAll();
 
         for (Employee employee : employees) {
-            allEmployees.add(new EmployeeDTO(employee.getEmployeeId(), employee.getName(), employee.getPosition(), employee.getAddress(), employee.getContactNo(), employee.getSalary()));
+            allEmployees.add(new EmployeeDTO(employee.getEmployeeId(), employee.getName(), employee.getPosition(), employee.getAddress(), employee.getContactNo(), employee.getSalary(), employee.getUserId()));
         }
 
         return allEmployees;
@@ -27,5 +28,10 @@ public class EmployeeBOImpl implements EmployeeBO {
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) throws SQLException, ClassNotFoundException {
         employeeDAO.add(new Employee(employeeDTO.getName(), employeeDTO.getPosition(), employeeDTO.getAddress(), employeeDTO.getContactNo(), employeeDTO.getSalary(), employeeDTO.getEmployeeId()));
+    }
+
+    @Override
+    public void updateEmployee(EmployeeDTO employee) throws SQLException, ClassNotFoundException {
+        employeeDAO.update(new Employee(employee.getEmployeeId(), employee.getName(), employee.getPosition(), employee.getAddress(), employee.getContactNo(), employee.getSalary()));
     }
 }

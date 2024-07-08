@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import lk.ijse.medpluscarepharmacylayered.bo.BOFactory;
 import lk.ijse.medpluscarepharmacylayered.bo.custom.UserBO;
 import lk.ijse.medpluscarepharmacylayered.dao.DAOFactory;
 import lk.ijse.medpluscarepharmacylayered.dto.UserDTO;
@@ -30,7 +31,7 @@ public class UpdateUsrFormController {
     public JFXButton cancelBtn;
     public JFXButton updateBtn;
 
-    UserBO userBO = (UserBO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.USER);
+    UserBO userBO = (UserBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.USER);
     public void initialize() {
         usernameTxt.requestFocus();
         usernameTxt.setOnKeyPressed(keyEvent -> {

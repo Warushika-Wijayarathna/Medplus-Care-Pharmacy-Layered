@@ -10,4 +10,6 @@ public interface EmployeeBO extends SuperBO {
     List<EmployeeDTO> getAllEmployees() throws SQLException, ClassNotFoundException;
 
     void saveEmployee(EmployeeDTO employeeDTO) throws SQLException, ClassNotFoundException;
+
+    void updateEmployee(EmployeeDTO employee) throws SQLException, ClassNotFoundException;
 }

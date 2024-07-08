@@ -9,6 +9,7 @@ import lk.ijse.medpluscarepharmacylayered.dto.UserDTO;
 import lk.ijse.medpluscarepharmacylayered.entity.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserBOImpl implements UserBO {
@@ -16,7 +17,7 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public List<UserDTO> getAllUsers() throws SQLException, ClassNotFoundException {
-        List<UserDTO> allUsers = null;
+        List<UserDTO> allUsers = new ArrayList<>();
         List<User> users = userDAO.getAll();
         for (User user : users) {
             allUsers.add(new UserDTO(user.getUserId(), user.getUserName(), user.getPassword()));
