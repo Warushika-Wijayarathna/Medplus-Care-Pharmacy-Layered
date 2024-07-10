@@ -4,6 +4,7 @@ import lk.ijse.medpluscarepharmacylayered.dao.SQLUtil;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.CustomerDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.Customer;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -59,4 +60,39 @@ public class CustomerDAOImpl implements CustomerDAO {
         return customer;
     }
 
+    @Override
+    public Customer searchCustomerByCustId(String custId) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Customer WHERE cust_id = ?", custId);
+        if (resultSet.next()) {
+            return new Customer(resultSet.getString("cust_id"),
+                    resultSet.getString("name"),
+                    resultSet.getInt("contact_no"),
+                    resultSet.getString("email"));
+        }
+        return null;
+    }
+
+    @Override
+    public Customer searchCustomerByContact(String contactNumber) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Customer WHERE contact_no = ?", contactNumber);
+        Customer customer = null;
+        if (resultSet.next()) {
+            customer = new Customer();
+            customer.setCustomerId(resultSet.getString("cust_id"));
+            customer.setName(resultSet.getString("name"));
+            customer.setContactNo(resultSet.getInt("contact_no"));
+            customer.setEmail(resultSet.getString("email"));
+        }
+        System.out.println("Customer : "+customer);
+        return customer;
+    }
+
+    @Override
+    public String getCustomerId(String custId) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT cust_id FROM Customer WHERE contact_no = ?", custId);
+        if (resultSet.next()) {
+            return resultSet.getString("cust_id");
+        }
+        return null;
+    }
 }

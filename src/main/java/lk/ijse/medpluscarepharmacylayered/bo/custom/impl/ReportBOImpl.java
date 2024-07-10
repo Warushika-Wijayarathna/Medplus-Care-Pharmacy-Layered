@@ -45,8 +45,8 @@ public class ReportBOImpl implements ReportBO {
     }
 
     @Override
-    public String getNextReportId() {
-        return null;
+    public String getNextReportId() throws SQLException, ClassNotFoundException {
+        return reportDAO.generateNewID();
     }
 
     @Override

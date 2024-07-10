@@ -25,8 +25,7 @@ public class DAOFactory {
         SUPPLIER,
         TEMPERATURE,
         TEST,
-        USER,
-        QUERY
+        USER
     }
 
     public SuperDAO getDAO(DAOTypes types){
@@ -59,8 +58,6 @@ public class DAOFactory {
                 return new TestDAOImpl();
             case USER:
                 return new UserDAOImpl();
-            case QUERY:
-                return new QueryDAOImpl();
             default:
                 return null;
         }

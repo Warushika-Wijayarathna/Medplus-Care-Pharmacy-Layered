@@ -3,6 +3,7 @@ package lk.ijse.medpluscarepharmacylayered.dao.custom.Impl;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.TemperatureDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.TemperatureReading;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class TemperatureDAOImpl implements TemperatureDAO {
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
+
 
     @Override
     public TemperatureReading search(String id) throws SQLException, ClassNotFoundException {

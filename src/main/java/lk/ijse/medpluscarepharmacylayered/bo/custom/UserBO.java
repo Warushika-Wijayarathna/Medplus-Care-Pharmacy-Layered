@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserBO extends SuperBO {
-
     List<UserDTO> getAllUsers() throws SQLException, ClassNotFoundException;
 
     void saveUser(UserDTO userDTO) throws SQLException, ClassNotFoundException;
@@ -15,4 +14,6 @@ public interface UserBO extends SuperBO {
     String getIdByUsername(String username);
 
     void updateUser(UserDTO user) throws SQLException, ClassNotFoundException;
+
+    boolean checkUser(String username, String password) throws SQLException, ClassNotFoundException;
 }

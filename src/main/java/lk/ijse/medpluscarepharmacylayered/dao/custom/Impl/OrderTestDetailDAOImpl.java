@@ -3,6 +3,7 @@ package lk.ijse.medpluscarepharmacylayered.dao.custom.Impl;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.OrderTestDetailDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.OrderTestDetail;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class OrderTestDetailDAOImpl implements OrderTestDetailDAO {
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+    public boolean delete( String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 

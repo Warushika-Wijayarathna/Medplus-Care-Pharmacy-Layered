@@ -1,9 +1,7 @@
 package lk.ijse.medpluscarepharmacylayered.bo.custom.impl;
 
-import lk.ijse.medpluscarepharmacylayered.bo.SuperBO;
 import lk.ijse.medpluscarepharmacylayered.bo.custom.UserBO;
 import lk.ijse.medpluscarepharmacylayered.dao.DAOFactory;
-import lk.ijse.medpluscarepharmacylayered.dao.custom.QueryDAO;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.UserDAO;
 import lk.ijse.medpluscarepharmacylayered.dto.UserDTO;
 import lk.ijse.medpluscarepharmacylayered.entity.User;
@@ -38,5 +36,10 @@ public class UserBOImpl implements UserBO {
     @Override
     public void updateUser(UserDTO user) throws SQLException, ClassNotFoundException {
         userDAO.update(new User(user.getUserId(), user.getUserName(), user.getPassword()));
+    }
+
+    @Override
+    public boolean checkUser(String username, String password) throws SQLException, ClassNotFoundException {
+        return userDAO.auth(username, password);
     }
 }

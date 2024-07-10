@@ -73,6 +73,8 @@ public class ReportFormController {
     @FXML
     private Label name;
     ReportBO reportBO = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.REPORT);
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
+    TestBO testBO = (TestBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.TEST);
     public void initialize() {
         setCellValueFactory();
         loadAllReports();
@@ -118,9 +120,11 @@ public class ReportFormController {
         });
 
         try {
-            allTestNames = FXCollections.observableArrayList(TestRepo.getAllTestNames());
+            allTestNames = FXCollections.observableArrayList(testBO.getAllTestNames());
             testComBox.setItems(allTestNames);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -165,6 +169,8 @@ public class ReportFormController {
             reportTable.setItems(obList);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -178,6 +184,8 @@ public class ReportFormController {
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Report to delete customer!").showAndWait();
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         } else {
             new Alert(Alert.AlertType.WARNING, "Please select a report to delete!").showAndWait();
@@ -222,6 +230,8 @@ public class ReportFormController {
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the report!").showAndWait();
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
 
         }
@@ -261,7 +271,7 @@ public class ReportFormController {
         try {
             String name = custName.getText();
             String testId = testComBox.getValue().toString().trim();
-            String testName = TestRepo.getTestName(testId);
+            String testName = testBO.getTestName(testId);
             String result = resultText.getText().trim();
             LocalDate issueDate = issueDatePicker.getValue();
             LocalDate pickUpDate = pickUpDatePicker.getValue();
@@ -544,7 +554,7 @@ public class ReportFormController {
         reportTable.setItems(sortedList);
     }
 
-    public void onMouseClickAction(MouseEvent mouseEvent) {
+    public void onMouseClickAction(MouseEvent mouseEvent) throws SQLException, ClassNotFoundException {
         if (mouseEvent.getClickCount() == 1) {
             int selectedIndex = reportTable.getSelectionModel().getSelectedIndex();
 
@@ -558,7 +568,7 @@ public class ReportFormController {
                 LocalDate issueDate = selectedReport.getIssueDate();
                 LocalDate pickUpDate = selectedReport.getPickupDate();
 
-                CustomerDTO customer= CustomerRepo.searchCustomerByCustId(custId);
+                CustomerDTO customer= customerBO.searchCustomerByCustId(custId);
 
                 searchCustomer.setText(customer.getName());
                 testComBox.setValue(testId);
@@ -581,7 +591,7 @@ public class ReportFormController {
     public void onSelectAction(ActionEvent actionEvent) {
         try {
             String testId = (String) testComBox.getSelectionModel().getSelectedItem();
-            boolean isInstant = ReportRepo.checkInstant(testId);
+            boolean isInstant = testBO.checkInstant(testId);
             System.out.println(isInstant);
 
             if (isInstant) {
@@ -600,6 +610,8 @@ public class ReportFormController {
 
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -625,7 +637,7 @@ public class ReportFormController {
         String contactNumber = searchCustomer.getText().trim();
         if (!contactNumber.isEmpty()) {
             try {
-                CustomerDTO customer = CustomerRepo.searchCustomerByContact(contactNumber);
+                CustomerDTO customer = customerBO.searchCustomerByContact(contactNumber);
                 if (customer != null) {
                     searchCustomer.setText(customer.getName());
                     custEmail.setText(customer.getEmail());
@@ -643,6 +655,8 @@ public class ReportFormController {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         } else {
             new Alert(Alert.AlertType.ERROR,"Please enter a contact number!!");

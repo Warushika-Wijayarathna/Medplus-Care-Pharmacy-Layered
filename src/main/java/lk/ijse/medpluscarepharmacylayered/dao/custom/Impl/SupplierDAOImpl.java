@@ -4,6 +4,7 @@ import lk.ijse.medpluscarepharmacylayered.dao.SQLUtil;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.SupplierDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.Supplier;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class SupplierDAOImpl implements SupplierDAO {
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+    public boolean delete( String id) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("DELETE FROM Supplier WHERE sp_id=?", id);
     }
 

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane onKeyPressed="#onFKeyPressed" prefHeight="841.0" prefWidth="1544.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacy.controller.ItemFormController">
+<AnchorPane onKeyPressed="#onFKeyPressed" prefHeight="841.0" prefWidth="1544.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacylayered.controller.ItemFormController">
    <children>
       <TableView fx:id="itemTable" layoutX="55.0" layoutY="498.0" onMouseClicked="#onMouseClickAction" prefHeight="308.0" prefWidth="1463.0">
          <columns>

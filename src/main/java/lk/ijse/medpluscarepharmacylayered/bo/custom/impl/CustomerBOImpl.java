@@ -29,7 +29,7 @@ public class CustomerBOImpl implements CustomerBO {
 
     @Override
     public void deleteCustomer(CustomerDTO customer) throws SQLException, ClassNotFoundException {
-        customerDAO.delete(customer.getCustomerId());
+        customerDAO.delete( customer.getCustomerId());
     }
 
     @Override
@@ -51,6 +51,36 @@ public class CustomerBOImpl implements CustomerBO {
 
     public String generateCustomerId() throws SQLException, ClassNotFoundException {
         return customerDAO.generateNewID();
+    }
+
+    @Override
+    public CustomerDTO searchCustomerByCustId(String custId) throws SQLException, ClassNotFoundException {
+        Customer customer = customerDAO.searchCustomerByCustId(custId);
+        return new CustomerDTO(customer.getCustomerId(), customer.getName(), customer.getContactNo(), customer.getEmail());
+    }
+
+    @Override
+    public CustomerDTO searchCustomerByContact(String contactNumber) throws SQLException, ClassNotFoundException {
+        Customer customer = customerDAO.searchCustomerByContact(contactNumber);
+        if (customer == null) {
+            return null;
+        }
+        return new CustomerDTO(customer.getCustomerId(), customer.getName(), customer.getContactNo(), customer.getEmail());
+    }
+
+    @Override
+    public List<String> getAllCustNames() throws SQLException, ClassNotFoundException {
+        List<CustomerDTO> allCustomerDetails = getAllCustomers();
+        List<String> allCustomerNames = new ArrayList<>();
+        for (CustomerDTO customer : allCustomerDetails) {
+            allCustomerNames.add(customer.getName());
+        }
+        return allCustomerNames;
+    }
+
+    @Override
+    public String getCustomerId(String custId) throws SQLException, ClassNotFoundException {
+        return customerDAO.getCustomerId(custId);
     }
 
 }

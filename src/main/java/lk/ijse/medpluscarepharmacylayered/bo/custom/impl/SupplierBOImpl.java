@@ -1,6 +1,5 @@
 package lk.ijse.medpluscarepharmacylayered.bo.custom.impl;
 
-import lk.ijse.medpluscarepharmacylayered.bo.SuperBO;
 import lk.ijse.medpluscarepharmacylayered.bo.custom.SupplierBO;
 import lk.ijse.medpluscarepharmacylayered.dao.DAOFactory;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.SupplierDAO;
@@ -27,7 +26,7 @@ public class SupplierBOImpl implements SupplierBO {
 
     @Override
     public void deleteSupplier(SupplierDTO supplier) throws SQLException, ClassNotFoundException {
-        supplierDAO.delete(supplier.getSupplierId());
+        supplierDAO.delete( supplier.getSupplierId());
     }
 
     @Override

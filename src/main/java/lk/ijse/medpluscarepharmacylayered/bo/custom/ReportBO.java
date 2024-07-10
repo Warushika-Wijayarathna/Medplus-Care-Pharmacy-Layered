@@ -13,7 +13,7 @@ public interface ReportBO extends SuperBO {
 
     void updateReport(ReportDTO updatedReport) throws SQLException, ClassNotFoundException;
 
-    String getNextReportId();
+    String getNextReportId() throws SQLException, ClassNotFoundException;
 
     void addReport(ReportDTO newReport) throws SQLException, ClassNotFoundException;
 }

@@ -11,7 +11,7 @@ public class BOFactory {
     }
 
     public enum BOTypes{
-        CUSTOMER,ITEM,EMPLOYEE,PRESCRIPTION,ORDER,ORDER_ITEM_DETAIL,USER,ITEM_SUPPLIER_DETAIL,ORDER_TEST_DETAIL,PAYMENT,PRES_TEST_DETAIL,REPORT,SUPPLIER,QUERY,TEST
+        CUSTOMER,ITEM,EMPLOYEE,PRESCRIPTION,ORDER,ORDER_ITEM_DETAIL,USER,ITEM_SUPPLIER_DETAIL,ORDER_TEST_DETAIL,PAYMENT,PRES_TEST_DETAIL,REPORT,SUPPLIER,TEST
     }
 
     public SuperBO getBO(BOTypes boTypes){
@@ -40,8 +40,6 @@ public class BOFactory {
                 return new ReportBOImpl();
             case SUPPLIER:
                 return new SupplierBOImpl();
-            case QUERY:
-                return new QueryBOImpl();
             case TEST:
                 return new TestBOImpl();
             default:

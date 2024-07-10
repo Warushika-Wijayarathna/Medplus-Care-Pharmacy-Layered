@@ -4,10 +4,10 @@ import lk.ijse.medpluscarepharmacylayered.dao.SQLUtil;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.EmployeeDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.Employee;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
     @Override

@@ -5,12 +5,22 @@ import lk.ijse.medpluscarepharmacylayered.dao.custom.UserDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.User;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserDAOImpl implements UserDAO {
+    public boolean auth(String userName, String password) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT password FROM User WHERE usr_name = ?";
+
+        ResultSet resultSet = SQLUtil.execute(sql, userName);
+        if (resultSet.next()) {
+            String dbPassword = resultSet.getString("password");
+            return dbPassword.equals(password);
+        } else {
+            return false;
+        }
+    }
     @Override
     public ArrayList<User> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SQLUtil.execute("SELECT * FROM User");
