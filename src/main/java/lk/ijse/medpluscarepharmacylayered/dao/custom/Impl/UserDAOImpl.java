@@ -13,7 +13,7 @@ public class UserDAOImpl implements UserDAO {
     public boolean auth(String userName, String password) throws SQLException, ClassNotFoundException {
         String sql = "SELECT password FROM User WHERE usr_name = ?";
 
-        ResultSet resultSet = SQLUtil.execute(sql, userName);
+        ResultSet resultSet = SQLUtil.execute(null,sql, userName);
         if (resultSet.next()) {
             String dbPassword = resultSet.getString("password");
             return dbPassword.equals(password);
@@ -21,9 +21,19 @@ public class UserDAOImpl implements UserDAO {
             return false;
         }
     }
+
+    @Override
+    public String getUserId(String admin) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT usr_id FROM User WHERE usr_name=?", admin);
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            }
+        return null;
+    }
+
     @Override
     public ArrayList<User> getAll() throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT * FROM User");
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM User");
         ArrayList<User> users = new ArrayList<>();
         while (rst.next()) {
             users.add(new User(rst.getString(1), rst.getString(2), rst.getString(3)));
@@ -33,12 +43,12 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean add(User entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO User VALUES (?,?)", entity.getUserName(), entity.getPassword());
+        return SQLUtil.execute(null,"INSERT INTO User VALUES (?,?)", entity.getUserName(), entity.getPassword());
     }
 
     @Override
     public boolean update(User entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("UPDATE User SET usr_name=?,password=? WHERE usr_id=?", entity.getUserName(), entity.getPassword(), entity.getUserId());
+        return SQLUtil.execute(null,"UPDATE User SET usr_name=?,password=? WHERE usr_id=?", entity.getUserName(), entity.getPassword(), entity.getUserId());
     }
 
     @Override
@@ -53,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("DELETE FROM User WHERE userId=?", id);
+        return SQLUtil.execute(null,"DELETE FROM User WHERE userId=?", id);
     }
 
     @Override

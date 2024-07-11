@@ -66,20 +66,20 @@ public class DashBoardController extends AnchorPane{
         admin = username;
         adminLabel.setText(username);
     }
-//    public void cashRegBtnClickOnAction(ActionEvent actionEvent) {
-//        try {
-//            titleText.setText("Cash Register");
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/cash_register.fxml"));
-//            AnchorPane cashRegister = loader.load();
-//
-//            CashRegisterFormController controller = loader.getController();
-//            controller.usrLbl.setText(admin);
-//            rootPane.getChildren().clear();
-//            rootPane.getChildren().addAll(cashRegister);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void cashRegBtnClickOnAction(ActionEvent actionEvent) {
+        try {
+            titleText.setText("Cash Register");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/cash_register.fxml"));
+            AnchorPane cashRegister = loader.load();
+
+            CashRegisterFormController controller = loader.getController();
+            controller.usrLbl.setText(admin);
+            rootPane.getChildren().clear();
+            rootPane.getChildren().addAll(cashRegister);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void custBtnClickOnAction(ActionEvent actionEvent) {
         try {
@@ -270,7 +270,5 @@ public class DashBoardController extends AnchorPane{
         rootPane.getChildren().add(temp);
     }
 
-    public void cashRegBtnClickOnAction(ActionEvent actionEvent) {
-    }
 }
 

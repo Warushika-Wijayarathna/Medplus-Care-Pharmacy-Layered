@@ -26,16 +26,8 @@ public class BOFactory {
                 return new PrescriptionBOImpl();
             case ORDER:
                 return new OrderBOImpl();
-            case ORDER_ITEM_DETAIL:
-                return new OrderItemDetailBOImpl();
             case USER:
                 return new UserBOImpl();
-            case ITEM_SUPPLIER_DETAIL:
-                return new ItemSupplierDetailBOImpl();
-            case ORDER_TEST_DETAIL:
-                return new OrderTestDetailBOImpl();
-            case PRES_TEST_DETAIL:
-                return new PrescriptionTestDetailBOImpl();
             case REPORT:
                 return new ReportBOImpl();
             case SUPPLIER:

@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" onKeyPressed="#onFPressed" prefHeight="841.0" prefWidth="1544.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacy.controller.CashRegisterFormController">
+<AnchorPane fx:id="rootPane" onKeyPressed="#onFPressed" prefHeight="841.0" prefWidth="1544.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.medpluscarepharmacylayered.controller.CashRegisterFormController">
    <children>
       <Line endX="100.0" layoutX="793.0" layoutY="15.0" startX="100.0" startY="810.0" />
       <JFXTextField fx:id="itemSearchBar" layoutX="24.0" layoutY="197.0" onKeyPressed="#onSearchKeyPressed" prefHeight="44.0" prefWidth="219.0" promptText="Search Item" />

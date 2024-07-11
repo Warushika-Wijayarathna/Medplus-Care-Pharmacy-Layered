@@ -13,7 +13,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public ArrayList<Employee> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Employee> employeeList = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Employee");
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM Employee");
         while (rst.next()) {
             employeeList.add(new Employee(rst.getString(1),
                     rst.getString(2),
@@ -28,7 +28,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public boolean add(Employee entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO Employee VALUES (?,?,?,?,?,?)",
+        return SQLUtil.execute(null,"INSERT INTO Employee VALUES (?,?,?,?,?,?)",
                 entity.getName(),
                 entity.getPosition(),
                 entity.getAddress(),
@@ -39,7 +39,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public boolean update(Employee entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("UPDATE Employee SET name=?,position=?,address=?,contact_no=?,salary=? WHERE emp_id=?",
+        return SQLUtil.execute(null,"UPDATE Employee SET name=?,position=?,address=?,contact_no=?,salary=? WHERE emp_id=?",
                 entity.getName(),
                 entity.getPosition(),
                 entity.getAddress(),

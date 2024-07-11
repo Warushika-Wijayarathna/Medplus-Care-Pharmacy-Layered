@@ -64,6 +64,7 @@ public class ItemFormController {
     ObservableList<SmallSupplierTm> obList = FXCollections.observableArrayList();
     public ItemTm selectedItem;
     public SmallSupplierTm selectedSupplierOfCart;
+    public boolean isCartEmpty;
     SupplierBO supplierBO = (SupplierBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER);
     ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ITEM);
 
@@ -77,6 +78,8 @@ public class ItemFormController {
             allSupplierNames = FXCollections.observableArrayList(supplierBO.getAllSupplierNames());
             suppComBox.setItems(allSupplierNames);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -230,25 +233,32 @@ public class ItemFormController {
     }
 
 
-    private void handleDeleteItem(ItemDTO item) {
+    private void handleDeleteItem(ItemDTO item)  {
         if (item != null) {
-            try {
-                boolean isDeleted = false;
+            boolean isDeleted = false;
 
-                isDeleted = itemBO.deleteItem(item);
-
-                if (isDeleted){
-                    obList.clear();
-                    loadAllItems();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Failed to delete item!").showAndWait();
-                    return;
+            if (supplierCart.getItems().isEmpty()) {
+                try {
+                    isDeleted = itemBO.deleteEmpty(item);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-                new Alert(Alert.AlertType.CONFIRMATION, "Item deleted successfully!").showAndWait();
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR, "Item to delete customer!").showAndWait();
-                e.printStackTrace();
+            } else {
+                isDeleted = itemBO.deleteItem(item);
             }
+
+
+            if (isDeleted){
+                obList.clear();
+                loadAllItems();
+                clear();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to delete item!").showAndWait();
+                return;
+            }
+            new Alert(Alert.AlertType.CONFIRMATION, "Item deleted successfully!").showAndWait();
         } else {
             new Alert(Alert.AlertType.WARNING, "Please select a item to delete!").showAndWait();
         }
@@ -310,7 +320,8 @@ public class ItemFormController {
                     allSupplierIds.add(supplier.getSupplierId());
                 }
 
-                boolean isUpdated = itemBO.updateItem(updatedItem, allSupplierIds);
+                System.out.println("isCartEmpty: " + isCartEmpty);
+                boolean isUpdated = itemBO.updateItem(isCartEmpty,updatedItem, allSupplierIds);
 
                 if (isUpdated) {
                     obList.clear();
@@ -408,38 +419,40 @@ public class ItemFormController {
                         selectedSupplierOfCart = supplierCart.getItems().get(selectedIndexOfSupplier);
                     }
                     List<SupplierDTO> supplierTm = null;
-                    try {
-                        List<String> suppliers = itemBO.getSupplierIdsByItemId(itemId);
-                        System.out.println(suppliers);
-                        supplierTm = supplierBO.getSupplierDetailsBySupplierId(suppliers);
-                        System.out.println(supplierTm);
-                        for(SupplierDTO supplier : supplierTm){
-                            ImageView removeIcon = new ImageView(new Image(getClass().getResourceAsStream("/icon/Untitled design (47).png")));
-                            removeIcon.setFitWidth(20);
-                            removeIcon.setFitHeight(20);
+                    List<String> suppliers = itemBO.getSupplierIdsByItemId(itemId);
+                    System.out.println(suppliers);
+                    supplierTm = supplierBO.getSupplierDetailsBySupplierId(suppliers);
+                    System.out.println(supplierTm);
+                    for(SupplierDTO supplier : supplierTm){
+                        ImageView removeIcon = new ImageView(new Image(getClass().getResourceAsStream("/icon/Untitled design (47).png")));
+                        removeIcon.setFitWidth(20);
+                        removeIcon.setFitHeight(20);
 
-                            JFXButton remove = new JFXButton();
-                            remove.setGraphic(removeIcon);
-                            remove.setOnAction(event-> {
-                                supplierCart.getItems().remove(new SmallSupplierTm(supplier.getSupplierId(), supplier.getName(), remove));
-                            });
+                        JFXButton remove = new JFXButton();
+                        remove.setGraphic(removeIcon);
+                        remove.setOnAction(event-> {
+                            supplierCart.getItems().remove(new SmallSupplierTm(supplier.getSupplierId(), supplier.getName(), remove));
+                        });
 
-                            SmallSupplierTm smallSupplierTm = new SmallSupplierTm(
-                                    supplier.getSupplierId(),
-                                    supplier.getName(),
-                                    remove
-                            );
-                            obList.add(smallSupplierTm);
+                        SmallSupplierTm smallSupplierTm = new SmallSupplierTm(
+                                supplier.getSupplierId(),
+                                supplier.getName(),
+                                remove
+                        );
+                        obList.add(smallSupplierTm);
 
-                        }
-                        supplierCart.setItems(obList);
-                        System.out.println(obList);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
                     }
+                    supplierCart.setItems(obList);
+                    System.out.println(obList);
+                    isCartEmpty = supplierCart.getItems().isEmpty();
+                    System.out.println(isCartEmpty);
                 }
             }
         } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -496,8 +509,7 @@ public class ItemFormController {
             double retailPrice = Double.parseDouble(retailPriceText);
             double discount = Double.parseDouble(discountText);
 
-            String itemId = itemBO.generateItemId(new ItemDTO(desc, qty, wholeSalePrice, retailPrice, discount, expDate));
-
+            String itemId = itemBO.generateItemId();
 
             ItemDTO newItem = new ItemDTO(itemId,desc, qty, wholeSalePrice, retailPrice, discount, expDate);
 
@@ -548,8 +560,9 @@ public class ItemFormController {
         } catch (NumberFormatException e) {
             new Alert(Alert.AlertType.ERROR, "Invalid number format!").showAndWait();
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to add item!").showAndWait();
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
     public void clear() {
@@ -580,11 +593,14 @@ public class ItemFormController {
                     });
                     SmallSupplierTm smallSupplierTm = new SmallSupplierTm(selectedSupplier.getSupplierId(), selectedSupplier.getName(), remove);
                     supplierCart.getItems().add(smallSupplierTm);
+
                 } else {
                     System.out.println("Supplier not found for " + selectedSupplierName);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }

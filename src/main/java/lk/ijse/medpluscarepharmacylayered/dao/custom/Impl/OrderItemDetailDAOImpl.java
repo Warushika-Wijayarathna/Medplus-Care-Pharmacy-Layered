@@ -1,5 +1,6 @@
 package lk.ijse.medpluscarepharmacylayered.dao.custom.Impl;
 
+import lk.ijse.medpluscarepharmacylayered.dao.SQLUtil;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.OrderItemDetailDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.OrderItemDetail;
 
@@ -43,4 +44,8 @@ public class OrderItemDetailDAOImpl implements OrderItemDetailDAO {
         return null;
     }
 
+    @Override
+    public boolean saveOrderDetail(String itemId, int qty, String orderId) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute(null,"INSERT INTO order_item_detail VALUES (?,?,?)", orderId,itemId, qty);
+    }
 }

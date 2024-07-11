@@ -48,7 +48,7 @@ public class PrescTestDetailDAOImpl implements PrescTestDetailDAO {
     }
 
     @Override
-    public boolean addPresc(Connection connection, String prescriptionId, String testId) throws SQLException {
+    public boolean addPresc(Connection connection, String prescriptionId, String testId) throws SQLException, ClassNotFoundException {
         System.out.println("Prescription ID: "+ prescriptionId);
         System.out.println("Test ID: "+ testId);
         boolean result = SQLUtil.execute(connection, "INSERT INTO presc_test_detail (presc_id, test_id) VALUES (?, ?)", prescriptionId, testId);
@@ -58,7 +58,7 @@ public class PrescTestDetailDAOImpl implements PrescTestDetailDAO {
     @Override
     public List<Test> getTestsByPrescriptionId(String prescId) throws SQLException, ClassNotFoundException {
         List<Test> testsByDesc = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Test WHERE test_id IN (SELECT test_id FROM presc_test_detail WHERE presc_id = ?)", prescId);
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM Test WHERE test_id IN (SELECT test_id FROM presc_test_detail WHERE presc_id = ?)", prescId);
         while (rst.next()) {
             Test test = new Test(
                     rst.getString("test_id"),
@@ -75,7 +75,7 @@ public class PrescTestDetailDAOImpl implements PrescTestDetailDAO {
     }
 
     @Override
-    public boolean deletePresc(Connection connection, String prescriptionId) throws SQLException {
+    public boolean deletePresc(Connection connection, String prescriptionId) throws SQLException, ClassNotFoundException {
         boolean result = SQLUtil.execute(connection, "DELETE FROM presc_test_detail WHERE presc_id = ?", prescriptionId);
         System.out.println("Result: "+ result);
         return result;

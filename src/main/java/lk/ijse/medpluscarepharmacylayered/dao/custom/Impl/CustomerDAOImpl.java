@@ -13,7 +13,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public ArrayList<Customer> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Customer> allCustomers = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Customer");
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM Customer");
         while (rst.next()) {
             Customer customer = new Customer(rst.getString("cust_id"), rst.getString("name"), rst.getInt("contact_no"), rst.getString("email"));
             allCustomers.add(customer);
@@ -23,12 +23,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public boolean add(Customer entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO Customer (name, contact_no, email) VALUES (?,?,?)", entity.getName(), entity.getContactNo(), entity.getEmail());
+        return SQLUtil.execute(null,"INSERT INTO Customer (name, contact_no, email) VALUES (?,?,?)", entity.getName(), entity.getContactNo(), entity.getEmail());
     }
 
     @Override
     public boolean update(Customer entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("UPDATE Customer SET name=?, contact_no=?, email=? WHERE cust_id=?", entity.getName(), entity.getContactNo(), entity.getEmail(), entity.getCustomerId());
+        return SQLUtil.execute(null,"UPDATE Customer SET name=?, contact_no=?, email=? WHERE cust_id=?", entity.getName(), entity.getContactNo(), entity.getEmail(), entity.getCustomerId());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT CONCAT('C', LPAD(next_id, 4, '0')) FROM AutoIncrement_Customer");
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT CONCAT('C', LPAD(next_id, 4, '0')) FROM AutoIncrement_Customer");
         if (resultSet.next()) {
             return resultSet.getString(1);
         }
@@ -47,13 +47,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("DELETE FROM Customer WHERE cust_id=?", id);
+        return SQLUtil.execute(null,"DELETE FROM Customer WHERE cust_id=?", id);
     }
 
     @Override
     public Customer search(String id) throws SQLException, ClassNotFoundException {
         Customer customer = null;
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Customer WHERE cust_id=?", id);
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM Customer WHERE cust_id=?", id);
         if (rst.next()) {
             customer = new Customer(rst.getString("cust_id"), rst.getString("name"), rst.getInt("contact_no"), rst.getString("email"));
         }
@@ -62,7 +62,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Customer searchCustomerByCustId(String custId) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Customer WHERE cust_id = ?", custId);
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT * FROM Customer WHERE cust_id = ?", custId);
         if (resultSet.next()) {
             return new Customer(resultSet.getString("cust_id"),
                     resultSet.getString("name"),
@@ -74,7 +74,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Customer searchCustomerByContact(String contactNumber) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Customer WHERE contact_no = ?", contactNumber);
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT * FROM Customer WHERE contact_no = ?", contactNumber);
         Customer customer = null;
         if (resultSet.next()) {
             customer = new Customer();
@@ -89,7 +89,16 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public String getCustomerId(String custId) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT cust_id FROM Customer WHERE contact_no = ?", custId);
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT cust_id FROM Customer WHERE contact_no = ?", custId);
+        if (resultSet.next()) {
+            return resultSet.getString("cust_id");
+        }
+        return null;
+    }
+
+    @Override
+    public String searchCustomerByName(String selectedCust) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT cust_id FROM Customer WHERE name = ?", selectedCust);
         if (resultSet.next()) {
             return resultSet.getString("cust_id");
         }

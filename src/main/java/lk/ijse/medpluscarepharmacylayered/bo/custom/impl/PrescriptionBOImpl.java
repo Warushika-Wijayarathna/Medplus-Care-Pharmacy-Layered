@@ -64,27 +64,22 @@ public class PrescriptionBOImpl implements PrescriptionBO {
             connection = DbConnection.getDbConnection().getConnection();
             connection.setAutoCommit(false);
 
-            System.out.println("Attempting to delete details for prescription ID: " + prescription.getPrescriptionId());
             boolean isDetailsDeleted = prescTestDetailDAO.deletePresc(connection, prescription.getPrescriptionId());
+            System.out.println("Details deleted: " + isDetailsDeleted);
             if (!isDetailsDeleted) {
-                System.out.println("PrescTestDetailDAO deletePresc method failed for prescription ID: " + prescription.getPrescriptionId());
+                System.out.println("Detail not deleted");
                 connection.rollback();
                 return false;
             }
-            System.out.println("Details deleted successfully for prescription ID: " + prescription.getPrescriptionId());
-
-            System.out.println("Attempting to delete prescription ID: " + prescription.getPrescriptionId());
             boolean isPrescriptionDeleted = prescriptionDAO.delete(prescription.getPrescriptionId());
             if (!isPrescriptionDeleted) {
-                System.out.println("PrescriptionDAO delete method failed for prescription ID: " + prescription.getPrescriptionId());
+                System.out.println("Prescription not deleted");
                 connection.rollback();
                 return false;
             }
-            System.out.println("Prescription deleted successfully for prescription ID: " + prescription.getPrescriptionId());
 
             connection.commit();
             return true;
-
         } catch (SQLException e) {
             if (connection != null) {
                 try {
@@ -195,8 +190,13 @@ public class PrescriptionBOImpl implements PrescriptionBO {
                 return false;
             }
 
+            String prescriptionId = prescriptionDAO.getGeneratedPrescriptionId(connection);
+            connection.commit();
+
+            connection.setAutoCommit(false);
+
             for (String testId : testIds) {
-                boolean isTestAdded = prescTestDetailDAO.addPresc(connection, newPresc.getPrescriptionId(), testId);
+                boolean isTestAdded = prescTestDetailDAO.addPresc(connection, prescriptionId, testId);
                 if (!isTestAdded) {
                     connection.rollback();
                     return false;
@@ -208,14 +208,23 @@ public class PrescriptionBOImpl implements PrescriptionBO {
 
         } catch (SQLException e) {
             if (connection != null) {
-                connection.rollback();
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
-            throw e;
+            e.printStackTrace();
+            return false;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } finally {
             if (connection != null) {
-                connection.setAutoCommit(true);
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }

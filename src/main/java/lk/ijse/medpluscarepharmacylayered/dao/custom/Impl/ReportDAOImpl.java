@@ -14,7 +14,7 @@ public class ReportDAOImpl implements ReportDAO {
     @Override
     public ArrayList<Report> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Report> reportList = new ArrayList<>();
-        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Report");
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT * FROM Report");
 
         while (resultSet.next()) {
             String reportId = resultSet.getString(1);
@@ -33,7 +33,7 @@ public class ReportDAOImpl implements ReportDAO {
 
     @Override
     public boolean add(Report entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO Report VALUES (?,?,?,?,?)",
+        return SQLUtil.execute(null,"INSERT INTO Report VALUES (?,?,?,?,?)",
                 entity.getCustId(),
                 entity.getTestId(),
                 entity.getResult(),
@@ -43,7 +43,7 @@ public class ReportDAOImpl implements ReportDAO {
 
     @Override
     public boolean update(Report entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("UPDATE Report SET cust_id = ?, test_id = ?, result = ?, issue_date = ?, pickup_date = ? WHERE r_Id = ?",
+        return SQLUtil.execute(null,"UPDATE Report SET cust_id = ?, test_id = ?, result = ?, issue_date = ?, pickup_date = ? WHERE r_Id = ?",
                 entity.getCustId(),
                 entity.getTestId(),
                 entity.getResult(),
@@ -59,12 +59,12 @@ public class ReportDAOImpl implements ReportDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT CONCAT('R', LPAD(next_id, 4, '0')) FROM AutoIncrement_Report");
+        return SQLUtil.execute(null,"SELECT CONCAT('R', LPAD(next_id, 4, '0')) FROM AutoIncrement_Report");
     }
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("DELETE FROM Report WHERE r_Id = ?", id);
+        return SQLUtil.execute(null,"DELETE FROM Report WHERE r_Id = ?", id);
     }
 
     @Override

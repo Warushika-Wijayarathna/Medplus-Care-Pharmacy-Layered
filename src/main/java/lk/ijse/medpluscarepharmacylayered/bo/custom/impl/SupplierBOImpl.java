@@ -5,6 +5,7 @@ import lk.ijse.medpluscarepharmacylayered.dao.DAOFactory;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.SupplierDAO;
 import lk.ijse.medpluscarepharmacylayered.dto.SupplierDTO;
 import lk.ijse.medpluscarepharmacylayered.entity.Supplier;
+import lk.ijse.medpluscarepharmacylayered.view.tm.SupplierTm;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,6 +43,33 @@ public class SupplierBOImpl implements SupplierBO {
     @Override
     public String generateSupplierId(SupplierDTO newSupplier) throws SQLException, ClassNotFoundException {
         return supplierDAO.generateNewID();
+    }
+
+    @Override
+    public List<String> getAllSupplierNames() throws SQLException, ClassNotFoundException {
+        List<String> supplierNames = new ArrayList<>();
+        List<SupplierDTO> supplierDTOS = getAllSuppliers();
+        for (SupplierDTO supplierDTO : supplierDTOS) {
+            supplierNames.add(supplierDTO.getName());
+        }
+        return supplierNames;
+    }
+
+    @Override
+    public List<SupplierDTO> getSupplierDetailsBySupplierId(List<String> suppliers) throws SQLException, ClassNotFoundException {
+        List<Supplier> supplierList = new ArrayList<>();
+        List<SupplierDTO> supplierDTOS = new ArrayList<>();
+        supplierList = supplierDAO.getSupplyDetailsBySupplierId(suppliers);
+        for (Supplier supplier : supplierList) {
+            supplierDTOS.add(new SupplierDTO(supplier.getSupplierId(), supplier.getName(), supplier.getContact(), supplier.getEmail()));
+        }
+
+        return supplierDTOS;
+    }
+
+    @Override
+    public SupplierTm getSupplierTmByName(String selectedSupplierName) throws SQLException, ClassNotFoundException {
+        return supplierDAO.getSupplierBy(selectedSupplierName);
     }
 
 }

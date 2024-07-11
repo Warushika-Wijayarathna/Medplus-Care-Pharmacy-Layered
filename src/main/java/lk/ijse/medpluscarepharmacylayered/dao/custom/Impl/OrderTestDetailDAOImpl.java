@@ -1,5 +1,6 @@
 package lk.ijse.medpluscarepharmacylayered.dao.custom.Impl;
 
+import lk.ijse.medpluscarepharmacylayered.dao.SQLUtil;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.OrderTestDetailDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.OrderTestDetail;
 
@@ -44,4 +45,8 @@ public class OrderTestDetailDAOImpl implements OrderTestDetailDAO {
     }
 
 
+    @Override
+    public boolean saveOrderDetail(String itemId, int qty, String orderId) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute(null,"INSERT INTO order_test_detail VALUES(?,?,?)", orderId, itemId, qty);
+    }
 }

@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface PrescTestDetailDAO extends CrudDAO<PrescTestDetail> {
-    boolean addPresc(Connection connection, String prescriptionId, String testId) throws SQLException;
+    boolean addPresc(Connection connection, String prescriptionId, String testId) throws SQLException, ClassNotFoundException;
 
     List<Test> getTestsByPrescriptionId(String prescId) throws SQLException, ClassNotFoundException;
 
-    boolean deletePresc(Connection connection, String prescriptionId) throws SQLException;
+    boolean deletePresc(Connection connection, String prescriptionId) throws SQLException, ClassNotFoundException;
 }

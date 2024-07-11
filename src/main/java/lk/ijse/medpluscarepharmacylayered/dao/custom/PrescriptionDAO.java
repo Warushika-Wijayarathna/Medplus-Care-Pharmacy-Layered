@@ -11,4 +11,5 @@ public interface PrescriptionDAO extends CrudDAO<Prescription> {
     boolean add(Connection connection, PrescriptionDTO newPresc) throws SQLException, ClassNotFoundException;
 
 
+    String getGeneratedPrescriptionId(Connection connection) throws SQLException, ClassNotFoundException;
 }

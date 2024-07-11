@@ -1,9 +1,10 @@
 package lk.ijse.medpluscarepharmacylayered.dao.custom.Impl;
 
+import lk.ijse.medpluscarepharmacylayered.dao.SQLUtil;
 import lk.ijse.medpluscarepharmacylayered.dao.custom.OrderDAO;
 import lk.ijse.medpluscarepharmacylayered.entity.Order;
 
-import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -30,6 +31,10 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute(null, "SELECT CONCAT('O', LPAD(next_id, 4, '0')) FROM AutoIncrement_Order");
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
         return null;
     }
 
@@ -43,4 +48,20 @@ public class OrderDAOImpl implements OrderDAO {
         return null;
     }
 
+    @Override
+    public boolean saveOrder(String contact, String totalLblText, String admin, String dateLblText) throws SQLException, ClassNotFoundException {
+        String orderId = generateNewID();
+
+        return SQLUtil.execute(null, "INSERT INTO `Order` VALUES (?, ?, ?, ?, ?)",
+                orderId, totalLblText, contact, admin, dateLblText);
+    }
+
+    @Override
+    public String getOrderId() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute(null, "SELECT o_id FROM `Order` ORDER BY o_id DESC LIMIT 1");
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        return null;
+    }
 }

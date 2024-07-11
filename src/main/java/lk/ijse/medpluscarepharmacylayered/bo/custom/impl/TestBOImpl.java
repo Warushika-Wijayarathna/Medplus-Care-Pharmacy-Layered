@@ -83,22 +83,10 @@ public class TestBOImpl implements TestBO {
     @Override
     public TestDTO getTestByDescription(String selectedTest) throws SQLException, ClassNotFoundException {
         Test test = testDAO.getBy(selectedTest);
-        System.out.println("Test :"+test.getDescription()+test.getLab()+ test.getSampleType()+test.getTestType()+test.getPrice());
+        System.out.println("Test :"+test.getTestId()+test.getDescription()+test.getLab()+ test.getSampleType()+test.getTestType()+test.getPrice());
         TestDTO testDTO = new TestDTO(test.getTestId(), test.getDescription(), test.getLab(), test.getSampleType(), test.getTestType(), test.getPrice());
         return testDTO;
     }
 
-    @Override
-    public List<String> getTestByDescriptionList(List<String> testNames) {
-        List<String> testIds = new ArrayList<>();
-        for (String testName : testNames) {
-            try {
-                testIds.add(getTestByDescription(testName).getTestId());
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return testIds;
-    }
 
 }

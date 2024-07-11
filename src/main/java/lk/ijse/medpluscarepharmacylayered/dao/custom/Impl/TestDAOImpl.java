@@ -13,7 +13,7 @@ public class TestDAOImpl implements TestDAO {
     @Override
     public ArrayList<Test> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Test> allTests = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Test");
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM Test");
         while (rst.next()) {
             Test test = new Test(rst.getString("test_id"), rst.getString("description"), rst.getString("lab"), rst.getString("sample_type"), rst.getString("test_type"), rst.getDouble("price"));
             allTests.add(test);
@@ -23,13 +23,13 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public boolean add(Test entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO Test (description, lab, sample_type, test_type, price) VALUES (?,?,?,?,?,?)",
+        return SQLUtil.execute(null,"INSERT INTO Test (description, lab, sample_type, test_type, price) VALUES (?,?,?,?,?,?)",
                 entity.getDescription(), entity.getLab(), entity.getSampleType(), entity.getTestType(), entity.getPrice());
     }
 
     @Override
     public boolean update(Test entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("UPDATE Test SET description=?, lab=?, sample_type=?, test_type=?, price=? WHERE test_id=?",
+        return SQLUtil.execute(null,"UPDATE Test SET description=?, lab=?, sample_type=?, test_type=?, price=? WHERE test_id=?",
                 entity.getDescription(), entity.getLab(), entity.getSampleType(), entity.getTestType(), entity.getPrice(), entity.getTestId());
     }
 
@@ -40,7 +40,7 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT CONCAT('T', LPAD(next_id, 4, '0')) FROM AutoIncrement_Test");
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT CONCAT('T', LPAD(next_id, 4, '0')) FROM AutoIncrement_Test");
         if (resultSet.next()) {
             return resultSet.getString(1);
         }
@@ -49,7 +49,7 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("DELETE FROM Test WHERE test_id=?", id);
+        return SQLUtil.execute(null,"DELETE FROM Test WHERE test_id=?", id);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public boolean checkInstant(String testId) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT test_type FROM Test WHERE test_id = ?", testId);
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT test_type FROM Test WHERE test_id = ?", testId);
         if (resultSet.next()) {
             String testType = resultSet.getString("test_type");
             return "instant".equalsIgnoreCase(testType.trim());
@@ -69,13 +69,13 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public String getTestName(String testId) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT description FROM Test WHERE test_id = ?", testId);
+        return SQLUtil.execute(null,"SELECT description FROM Test WHERE test_id = ?", testId);
     }
 
     @Override
     public Test getBy(String selectedTest) throws SQLException, ClassNotFoundException {
         try {
-            ResultSet resultSet = SQLUtil.execute("SELECT * FROM Test WHERE description = ?", selectedTest);
+            ResultSet resultSet = SQLUtil.execute(null,"SELECT * FROM Test WHERE description = ?", selectedTest);
             Test test = null;
             if (resultSet.next()) {
                 test = new Test(
@@ -86,11 +86,9 @@ public class TestDAOImpl implements TestDAO {
                         resultSet.getString("test_type"),
                         resultSet.getDouble("price"));
             }
-            System.out.println("Test :" + test.getTestId()+test.getDescription() + test.getLab() + test.getSampleType() + test.getTestType() + test.getPrice());
+            System.out.println("Test :    " + test.getTestId()+test.getDescription() + test.getLab() + test.getSampleType() + test.getTestType() + test.getPrice());
             return test;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

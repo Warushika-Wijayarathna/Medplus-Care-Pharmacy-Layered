@@ -5,38 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c8f67dd-6f64-4727-acfe-875fcf9a9e1b" name="Changes" comment="6th improvement">
-      <change afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/ItemFormController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/PrescFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1f7bd60e-cf00-47fc-b12a-515cb45f1db8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1f7bd60e-cf00-47fc-b12a-515cb45f1db8.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/CashRegisterFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/QueryDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/BOFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/BOFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/CustomerBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/CustomerBO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/ItemBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/ItemBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/ItemSupplierDetailBO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/OrderItemDetailBO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/OrderTestDetailBO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/PrescriptionBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/PrescriptionBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/PrescriptionTestDetailBO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/QueryBO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/ReportBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/ReportBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/OrderBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/OrderBO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/SupplierBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/SupplierBO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/TestBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/TestBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/UserBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/UserBO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/CustomerBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/CustomerBOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/ItemSupplierDetailBOImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/OrderItemDetailBOImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/OrderTestDetailBOImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/ItemBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/ItemBOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/OrderBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/OrderBOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/PrescriptionBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/PrescriptionBOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/PrescriptionTestDetailBOImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/QueryBOImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/ReportBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/ReportBOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/SupplierBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/SupplierBOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/TestBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/TestBOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/UserBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/bo/custom/impl/UserBOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/MemberIdentifierFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/MemberIdentifierFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/ReportFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/ReportFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/CrudDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/CrudDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/DashBoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/DashBoardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/ItemFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/ItemFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/PrescFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/PrescFormController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/DAOFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/DAOFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/SQLUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/SQLUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/CustomerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/CustomerDAO.java" afterDir="false" />
@@ -49,19 +35,21 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/OrderTestDetailDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/OrderTestDetailDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/PrescTestDetailDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/PrescTestDetailDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/PrescriptionDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/PrescriptionDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/QueryDAOImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/ReportDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/ReportDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/SupplierDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/SupplierDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/TemperatureDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/TemperatureDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/TestDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/TestDAOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/UserDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/Impl/UserDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/ItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/ItemDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/ItemSupplierDetailDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/ItemSupplierDetailDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/OrderDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/OrderDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/OrderItemDetailDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/OrderItemDetailDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/OrderTestDetailDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/OrderTestDetailDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/PrescTestDetailDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/PrescTestDetailDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/PrescriptionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/PrescriptionDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/QueryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/QueryDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/TestDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/TestDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/SupplierDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/SupplierDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/dao/custom/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/entity/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/entity/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/view/item_form.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/view/item_form.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/view/cash_register.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/view/cash_register.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/view/presc_form.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/view/presc_form.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,8 +60,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -117,6 +105,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="lk.ijse.medpluscarepharmacylayered.dao.custom.Impl" />
       <recent name="lk.ijse.medpluscarepharmacylayered.bo.custom.impl" />
       <recent name="lk.ijse.medpluscarepharmacylayered.bo.custom" />
       <recent name="lk.ijse.medpluscarepharmacylayered.entity" />
@@ -183,7 +172,7 @@
       <workItem from="1720397615376" duration="51960000" />
       <workItem from="1720579825017" duration="3267000" />
       <workItem from="1720589216078" duration="23308000" />
-      <workItem from="1720624631951" duration="5302000" />
+      <workItem from="1720624631951" duration="39078000" />
     </task>
     <task id="LOCAL-00001" summary="1st improvement">
       <option name="closed" value="true" />
@@ -241,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720632524435</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="6th improvement">
+      <option name="closed" value="true" />
+      <created>1720632540840</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1720632540840</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,6 +264,21 @@
     <MESSAGE value="5th improvement" />
     <MESSAGE value="6th improvement" />
     <option name="LAST_COMMIT_MESSAGE" value="6th improvement" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/lk/ijse/medpluscarepharmacylayered/controller/CashRegisterFormController.java</url>
+          <line>354</line>
+          <properties class="lk.ijse.medpluscarepharmacylayered.controller.CashRegisterFormController" method="checkoutAction">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

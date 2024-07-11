@@ -74,6 +74,7 @@ public class PrescFormController {
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
     TestBO testBO = (TestBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.TEST);
     PrescriptionBO prescriptionBO = (PrescriptionBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRESCRIPTION);
+    public String findCustomerId;
 
 
     public void initialize() {
@@ -212,7 +213,7 @@ public class PrescFormController {
                 }
 
                 if (isDeleted) {
-                    obList.clear();
+                    testCart.getItems().clear();
                     clear();
                     loadAllPrescriptions();
                 } else {
@@ -231,8 +232,18 @@ public class PrescFormController {
 
     private void handleUpdatePresc(PrescriptionDTO prescription) {
         if (selectedPresc != null) {
+            String selectedCust = custCombox.getEditor().getText().toLowerCase();
+            System.out.println("Selected Customer : "+selectedCust);
+            try {
+                findCustomerId = customerBO.searchCustomerByName(selectedCust);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             String prescId = selectedPresc.getPrescriptionId();
-            String custId = selectedPresc.getCustomerId();
+            String custId = findCustomerId;
+            System.out.println("Customer ID : "+findCustomerId);
             String patient = selectedPresc.getPatientName();
             String age = String.valueOf(selectedPresc.getAge());
             String medicalOfficer = selectedPresc.getMedicalOfficerName();
@@ -272,7 +283,7 @@ public class PrescFormController {
 
             PrescriptionDTO updatedPresc = new PrescriptionDTO(
                     prescId,
-                    custCombox.getValue().toString(),
+                    custId,
                     patientTxt.getText(),
                     Integer.parseInt(ageTxt.getText()),
                     medicalOfficerTxt.getText(),
@@ -295,7 +306,7 @@ public class PrescFormController {
             }
 
             if(isUpdated){
-                obList.clear();
+                testCart.getItems().clear();
             } else {
                 new Alert(Alert.AlertType.ERROR, "Failed to update prescription.").showAndWait();
                 return;
@@ -477,13 +488,14 @@ public class PrescFormController {
                 String duration = selectedPresc.getDuration();
                 String date = selectedPresc.getDate().toString();
 
+                String custName = customerBO.searchCustomerByCustId(custId).getName();
                 patientTxt.setText(patient);
                 ageTxt.setText(age);
                 medicalOfficerTxt.setText(medicalOfficer);
                 contextText.setText(context);
                 durationTxt.setText(duration);
                 datePicker.setValue(LocalDate.parse(date));
-                custCombox.setValue(custId);
+                custCombox.setValue(custName);
                 durationTxt.setText(duration);
                 datePicker.setValue(LocalDate.parse(date));
 
@@ -541,13 +553,7 @@ public class PrescFormController {
             return;
         }
 
-        try {
-            custId = customerBO.getCustomerId(custId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        custId = findCustomerId;
 
         PrescriptionDTO newPresc = new PrescriptionDTO(prescId, custId, patient, age, medicalOfficer, context, duration, date);
 
@@ -555,10 +561,8 @@ public class PrescFormController {
                 .map(SmallTestTm::getTestId)
                 .collect(Collectors.toList());
 
-        List<String> testIds = testBO.getTestByDescriptionList(testNames);
-
         try {
-            boolean isPrescSaved = prescriptionBO.addPrescriptionWithTestIds(newPresc, testIds);
+            boolean isPrescSaved = prescriptionBO.addPrescriptionWithTestIds(newPresc, testNames);
 
             new Alert(Alert.AlertType.INFORMATION, "Prescription added successfully.").showAndWait();
 
@@ -634,5 +638,18 @@ public class PrescFormController {
 
     public void onContext(KeyEvent keyEvent) {
         Regex.setTextColor(TextField.DESCRIPTION, contextText);
+    }
+
+    public void onCustSelectOption(ActionEvent actionEvent) {
+        String selectedCust = custCombox.getEditor().getText().toLowerCase();
+        System.out.println("Selected Customer : "+selectedCust);
+        try {
+            findCustomerId = customerBO.searchCustomerByName(selectedCust);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Customer ID : "+findCustomerId);
     }
 }

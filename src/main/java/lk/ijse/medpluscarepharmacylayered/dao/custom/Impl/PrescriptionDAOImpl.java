@@ -15,7 +15,7 @@ public class PrescriptionDAOImpl implements PrescriptionDAO {
     @Override
     public ArrayList<Prescription> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Prescription> allPrescriptions = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Prescription");
+        ResultSet rst = SQLUtil.execute(null,"SELECT * FROM Prescription");
         while (rst.next()) {
             Prescription prescription = new Prescription(
                     rst.getString("presc_id"),
@@ -39,7 +39,7 @@ public class PrescriptionDAOImpl implements PrescriptionDAO {
 
     @Override
     public boolean update(Prescription entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("UPDATE Prescription SET cust_id = ?, patient_name = ?, age = ?, medical_officer_name = ?, context = ?, duration = ?, date = ? WHERE presc_id = ?",
+        return SQLUtil.execute(null,"UPDATE Prescription SET cust_id = ?, patient_name = ?, age = ?, medical_officer_name = ?, context = ?, duration = ?, date = ? WHERE presc_id = ?",
                 entity.getCustomerId(),
                 entity.getPatientName(),
                 entity.getAge(),
@@ -57,7 +57,7 @@ public class PrescriptionDAOImpl implements PrescriptionDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT CONCAT('PR' , LPAD(next_id, 3, '0')) FROM AutoIncrement_Prescription");
+        ResultSet rst = SQLUtil.execute(null,"SELECT CONCAT('PR' , LPAD(next_id, 3, '0')) FROM AutoIncrement_Prescription");
         if (rst.next()) {
             return rst.getString(1);
         }
@@ -66,7 +66,7 @@ public class PrescriptionDAOImpl implements PrescriptionDAO {
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("DELETE FROM Prescription WHERE presc_id = ?", id);
+        return SQLUtil.execute(null,"DELETE FROM Prescription WHERE presc_id = ?", id);
     }
 
     @Override
@@ -85,6 +85,15 @@ public class PrescriptionDAOImpl implements PrescriptionDAO {
                 newPresc.getDuration(),
                 newPresc.getDate());
         return true;
+    }
+
+    @Override
+    public String getGeneratedPrescriptionId(Connection connection) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute(connection, "SELECT * FROM Prescription ORDER BY presc_id DESC LIMIT 1");
+            if (rst.next()) {
+                return rst.getString("presc_id");
+            }
+        return null;
     }
 
 
