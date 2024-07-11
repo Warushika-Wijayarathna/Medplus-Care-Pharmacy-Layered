@@ -88,5 +88,10 @@ public class TestBOImpl implements TestBO {
         return testDTO;
     }
 
+    @Override
+    public String getTestId(String test) throws SQLException, ClassNotFoundException {
+        return testDAO.getBy(test).getTestId();
+    }
+
 
 }

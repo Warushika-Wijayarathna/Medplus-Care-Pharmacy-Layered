@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import lk.ijse.medpluscarepharmacylayered.bo.BOFactory;
 import lk.ijse.medpluscarepharmacylayered.bo.custom.CustomerBO;
 import lk.ijse.medpluscarepharmacylayered.dto.CustomerDTO;
+import lk.ijse.medpluscarepharmacylayered.util.Email;
 import lk.ijse.medpluscarepharmacylayered.util.Regex;
 import lk.ijse.medpluscarepharmacylayered.util.TextField;
 import lk.ijse.medpluscarepharmacylayered.view.tm.CustomerTm;
@@ -56,6 +57,7 @@ public class CustomerFormController {
     public CustomerTm selectedCustomer;
 
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
+    Email email = new Email();
 
     public void initialize(){
         setCellValueFactory();
@@ -340,55 +342,8 @@ public class CustomerFormController {
 
             clear();
 
-            String to = Email;
+            email.sendCustomerEmail(Email, name);
 
-            String from = "www.thilankathushani@gmail.com";
-
-            String host = "smtp.gmail.com";
-
-            Properties properties = System.getProperties();
-
-            properties.put("mail.smtp.host", host);
-            properties.put("mail.smtp.port", "465");
-            properties.put("mail.smtp.ssl.enable", "true");
-            properties.put("mail.smtp.auth", "true");
-
-
-            Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-
-                protected PasswordAuthentication getPasswordAuthentication() {
-
-                    return new PasswordAuthentication("www.thilankathushani@gmail.com", "czxh uuwa espb cfrz");
-
-                }
-
-            });
-
-            session.setDebug(true);
-
-            try {
-                MimeMessage message = new MimeMessage(session);
-
-                message.setFrom(new InternetAddress(from));
-
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-                message.setSubject("Welcome!");
-
-                message.setText("Dear " + name + ",\n\n" +
-                        "Welcome to MedPlus Care Pharmacy!\n" +
-                        "We are delighted to have you as a customer.\n" +
-                        "Thank you for choosing us.\n\n" +
-                        "Best Regards,\n" +
-                        "MedPlus Care Pharmacy\n\n" +
-                        "This is an auto-generated email. Please do not reply." + "\n\n" );
-
-                System.out.println("sending...");
-                Transport.send(message);
-                System.out.println("Sent message successfully....");
-            } catch (MessagingException mex) {
-                mex.printStackTrace();
-            }
             loadAllCustomers();
             custTxt.requestFocus();
             Platform.runLater(()->{

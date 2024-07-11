@@ -26,4 +26,5 @@ public interface TestBO extends SuperBO {
 
     TestDTO getTestByDescription(String selectedTest) throws SQLException, ClassNotFoundException;
 
+    String getTestId(String test) throws SQLException, ClassNotFoundException;
 }

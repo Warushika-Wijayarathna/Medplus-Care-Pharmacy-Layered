@@ -20,7 +20,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import lk.ijse.medpluscarepharmacylayered.bo.BOFactory;
+import lk.ijse.medpluscarepharmacylayered.bo.custom.ItemBO;
+import lk.ijse.medpluscarepharmacylayered.bo.custom.OrderBO;
 import lk.ijse.medpluscarepharmacylayered.db.DbConnection;
+import lk.ijse.medpluscarepharmacylayered.dto.ItemDTO;
 import lk.ijse.medpluscarepharmacylayered.view.tm.ItemTm;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -65,15 +69,24 @@ public class TempFormController {
     ObservableList<ItemTm> observableList = FXCollections.observableArrayList();
     private Thread thread;
     private Scanner scanner;
+    public Label lblProfit;
 
     public static final String ACCOUNT_SID = "AC6356d1fea99ce2b13fbe4726d4fd3155";
     public static final String AUTH_TOKEN = "cf3eafea96e36a98bbdb50bbb5758067";
     private boolean alertSent = false;
+    ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ITEM);
+    OrderBO orderBO = (OrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ORDER);
     public void initialize() {
 
         setCellValueFactories();
         loadAllItems();
-        setSales();
+        try {
+            setSales();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         try {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 stopReading();
@@ -293,19 +306,22 @@ public class TempFormController {
         }
     }
 
-    private void setSales() {
+    private void setSales() throws SQLException, ClassNotFoundException {
         LocalDate today= LocalDate.now();
         Month Month = today.getMonth();
         int year = today.getYear();
 
-//        String daily = OrderRepo.getDailySales(today);
-//        lblDaily.setText(daily);
-//
-//        String monthly = OrderRepo.getMonthlySales(Month, year);
-//        lblMonthly.setText(monthly);
-//
-//        String annual = OrderRepo.getAnnualSales(year);
-//        lblAnnual.setText(annual);
+        String daily = orderBO.getDailySales(today);
+        lblDaily.setText(daily);
+
+        String monthly = orderBO.getMonthlySales(Month, year);
+        lblMonthly.setText(monthly);
+
+        String annual = orderBO.getAnnualSales(year);
+        lblAnnual.setText(annual);
+
+        String profit = orderBO.getProfit(today);
+        lblProfit.setText(profit);
     }
 
 
@@ -324,21 +340,23 @@ public class TempFormController {
     }
 
     public void loadAllItems() {
-//        try {
-//            itemTable.getItems().clear();
-//            List<Item> itemList = ItemRepo.getAllItem();
-//            observableList.clear();
-//            itemTable.getItems().clear();
-//
-//            for (Item item : itemList) {
-//                if (item != null && item.getItemId() != null && !item.getItemId().isEmpty()) {
-//                    observableList.add(new ItemTm(item.getItemId(), item.getDescription(), item.getQty(), item.getWholeSalePrice(), item.getRetailPrice(), item.getDiscount(), item.getExpDate()));
-//                }
-//            }
-//            itemTable.setItems(observableList);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            itemTable.getItems().clear();
+            List<ItemDTO> itemList = itemBO.getAllItem();
+            observableList.clear();
+            itemTable.getItems().clear();
+
+            for (ItemDTO item : itemList) {
+                if (item != null && item.getItemId() != null && !item.getItemId().isEmpty()) {
+                    observableList.add(new ItemTm(item.getItemId(), item.getDescription(), item.getQty(), item.getWholeSalePrice(), item.getRetailPrice(), item.getDiscount(), item.getExpDate()));
+                }
+            }
+            itemTable.setItems(observableList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setCellValueFactories() {
@@ -370,7 +388,13 @@ public class TempFormController {
 
     public void onRefresh(ActionEvent actionEvent) {
         loadAllItems();
-        setSales();
+        try {
+            setSales();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onRKey(KeyEvent keyEvent) {

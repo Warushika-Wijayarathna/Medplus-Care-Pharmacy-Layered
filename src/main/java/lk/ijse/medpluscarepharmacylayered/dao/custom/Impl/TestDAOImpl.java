@@ -59,7 +59,7 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public boolean checkInstant(String testId) throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute(null,"SELECT test_type FROM Test WHERE test_id = ?", testId);
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT test_type FROM Test WHERE description = ?", testId);
         if (resultSet.next()) {
             String testType = resultSet.getString("test_type");
             return "instant".equalsIgnoreCase(testType.trim());
@@ -69,7 +69,11 @@ public class TestDAOImpl implements TestDAO {
 
     @Override
     public String getTestName(String testId) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute(null,"SELECT description FROM Test WHERE test_id = ?", testId);
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT description FROM Test WHERE test_id = ?", testId);
+        if (resultSet.next()) {
+            return resultSet.getString("description");
+        }
+        return null;
     }
 
     @Override

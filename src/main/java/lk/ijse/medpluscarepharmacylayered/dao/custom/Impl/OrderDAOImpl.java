@@ -6,6 +6,8 @@ import lk.ijse.medpluscarepharmacylayered.entity.Order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 public class OrderDAOImpl implements OrderDAO {
@@ -63,5 +65,45 @@ public class OrderDAOImpl implements OrderDAO {
             return resultSet.getString(1);
         }
         return null;
+    }
+
+    @Override
+    public String getProfit(LocalDate today) throws SQLException, ClassNotFoundException {
+        Double profit = 0.0;
+        ResultSet resultSet = SQLUtil.execute(null, "SELECT daily_profit FROM DailyProfitView WHERE sale_date = ?", today);
+        if (resultSet.next()) {
+            profit = resultSet.getDouble(1);
+        }
+        return profit.toString();
+    }
+
+    @Override
+    public String annualSales(int year) throws SQLException, ClassNotFoundException {
+        Double total = 0.0;
+        ResultSet resultSet = SQLUtil.execute(null, "SELECT SUM(total) FROM `Order` WHERE YEAR(date) = ?", year);
+        if (resultSet.next()) {
+            total = resultSet.getDouble(1);
+        }
+        return total.toString();
+    }
+
+    @Override
+    public String monthlySales(Month month, int year) throws SQLException, ClassNotFoundException {
+        Double total = 0.0;
+        ResultSet resultSet = SQLUtil.execute(null, "SELECT SUM(total) FROM `Order` WHERE MONTH(date) = ? AND YEAR(date) = ?", month.getValue(), year);
+        if (resultSet.next()) {
+            total = resultSet.getDouble(1);
+        }
+        return total.toString();
+    }
+
+    @Override
+    public String dailySales(LocalDate today) throws SQLException, ClassNotFoundException {
+        Double total = 0.0;
+        ResultSet resultSet = SQLUtil.execute(null, "SELECT SUM(total) FROM `Order` WHERE date = ?", today);
+        if (resultSet.next()) {
+            total = resultSet.getDouble(1);
+        }
+        return total.toString();
     }
 }

@@ -28,6 +28,7 @@ import lk.ijse.medpluscarepharmacylayered.bo.custom.ReportBO;
 import lk.ijse.medpluscarepharmacylayered.bo.custom.TestBO;
 import lk.ijse.medpluscarepharmacylayered.dto.CustomerDTO;
 import lk.ijse.medpluscarepharmacylayered.dto.ReportDTO;
+import lk.ijse.medpluscarepharmacylayered.util.Email;
 import lk.ijse.medpluscarepharmacylayered.util.Regex;
 import lk.ijse.medpluscarepharmacylayered.util.TextField;
 import lk.ijse.medpluscarepharmacylayered.view.tm.ReportTm;
@@ -75,6 +76,7 @@ public class ReportFormController {
     ReportBO reportBO = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.REPORT);
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
     TestBO testBO = (TestBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.TEST);
+    Email email = new Email();
     public void initialize() {
         setCellValueFactory();
         loadAllReports();
@@ -270,12 +272,13 @@ public class ReportFormController {
     public void addBtnOnAction(ActionEvent actionEvent) {
         try {
             String name = custName.getText();
-            String testId = testComBox.getValue().toString().trim();
-            String testName = testBO.getTestName(testId);
+            String test = testComBox.getValue().toString().trim();
             String result = resultText.getText().trim();
             LocalDate issueDate = issueDatePicker.getValue();
             LocalDate pickUpDate = pickUpDatePicker.getValue();
             System.out.println("Result     :"+result);
+
+            String testId = testBO.getTestId(test);
 
             if (!Regex.isTextFieldValid(TextField.DESCRIPTION,name)){
                 new Alert(Alert.AlertType.ERROR, "Invalid Customer Name").showAndWait();
@@ -291,39 +294,33 @@ public class ReportFormController {
             if (result.isEmpty()) {
                 System.out.println("Result     :"+result);
 
-                sendDelayedEmail();
+                email.sendEmail(custEmail.getText(), searchCustomer.getText(), pdfResult);
             } else {
 
                 String nextId = reportBO.getNextReportId();
-                //create pdf file adding data from the report form
 
                 Document document = new Document();
 
-                    // Create a new PdfWriter instance
                     PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Report_" + nextId + ".pdf"));
 
-                    // Open the PDF document
                     document.open();
 
-                    // Add content to the document
                     document.add(new Paragraph("Report ID: " + nextId));
-                    document.add(new Paragraph("Customer : " + name));
+                    document.add(new Paragraph("Customer : " + searchCustomer.getText()));
                     document.add(new Paragraph("Test ID: " + testId));
-                    document.add(new Paragraph("Test : " + testName));
+                    document.add(new Paragraph("Test : " + test));
                     document.add(new Paragraph("Result: " + result));
                     document.add(new Paragraph("Issue Date: " + issueDate));
                     document.add(new Paragraph("Pickup Date: " +pickUpDate));
 
-                    // Close the document
                     document.close();
 
-                    // Close the writer
                     writer.close();
 
                     File pdfFile = new File("Report_" + nextId + ".pdf");
 
                     System.out.println("PDF Created!");
-                    sendInstantEmail(pdfFile);
+                    email.sendEmail(custEmail.getText(),searchCustomer.getText(),pdfFile);
             }
 
             ReportDTO newReport = new ReportDTO(name,testId, result, issueDate, pickUpDate);
@@ -366,154 +363,6 @@ public class ReportFormController {
         }
 
 
-    }
-
-    private void sendInstantEmail(File document) {
-        // Recipient's email ID needs to be mentioned.
-        String to = custEmail.getText();
-        System.out.println(to);
-
-        // Sender's email ID needs to be mentioned
-        String from = "www.thilankathushani@gmail.com";
-
-        // Assuming you are sending email from through gmails smtp
-        String host = "smtp.gmail.com";
-
-        // Get system properties
-        Properties properties = System.getProperties();
-
-        // Setup mail server
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.auth", "true");
-
-
-        Session session = Session.getInstance(properties, new Authenticator() {
-
-            protected PasswordAuthentication getPasswordAuthentication() {
-
-                return new PasswordAuthentication("www.thilankathushani@gmail.com", "czxh uuwa espb cfrz");
-
-            }
-
-        });
-
-        // Used to debug SMTP issues
-        session.setDebug(true);
-
-        try {
-            // Create a default MimeMessage object.
-            MimeMessage message = new MimeMessage(session);
-
-            // Set From: header field of the header.
-            message.setFrom(new InternetAddress(from));
-
-            // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-            // Set Subject: header field
-            message.setSubject("Your Test Results Are Back!");
-
-            // Now set the actual message
-
-            //Customize the msg
-            message.setText("Dear " + name + ",\n\n" +
-                    "Your test results are ready. Please find the attached PDF file for your test results.\n\n" +
-                    "Thank you for choosing MedPlus Care Pharmacy.\n\n" +
-                    "Best Regards,\n" +
-                    "MedPlus Care Pharmacy");
-
-            // attach pdfResult
-            Multipart multipart = new MimeMultipart();
-            MimeBodyPart attachmentPart = new MimeBodyPart();
-            attachmentPart.attachFile(document);
-            multipart.addBodyPart(attachmentPart);
-            message.setContent(multipart);
-
-            System.out.println("sending...");
-            // Send message
-            Transport.send(message);
-            System.out.println("Sent message successfully....");
-        } catch (MessagingException mex) {
-            mex.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void sendDelayedEmail() {
-        // Recipient's email ID needs to be mentioned.
-        String to = custEmail.getText();
-        System.out.println(to);
-
-        // Sender's email ID needs to be mentioned
-        String from = "www.thilankathushani@gmail.com";
-
-        // Assuming you are sending email from through gmails smtp
-        String host = "smtp.gmail.com";
-
-        // Get system properties
-        Properties properties = System.getProperties();
-
-        // Setup mail server
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.auth", "true");
-
-
-        Session session = Session.getInstance(properties, new Authenticator() {
-
-            protected PasswordAuthentication getPasswordAuthentication() {
-
-                return new PasswordAuthentication("www.thilankathushani@gmail.com", "czxh uuwa espb cfrz");
-
-            }
-
-        });
-
-        // Used to debug SMTP issues
-        session.setDebug(true);
-
-        try {
-            // Create a default MimeMessage object.
-            MimeMessage message = new MimeMessage(session);
-
-            // Set From: header field of the header.
-            message.setFrom(new InternetAddress(from));
-
-            // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-            // Set Subject: header field
-            message.setSubject("Your Test Results Are Back!");
-
-            // Now set the actual message
-
-            //Customize the msg
-            message.setText("Dear " + name + ",\n\n" +
-                    "Your test results are ready. Please find the attached PDF file for your test results.\n\n" +
-                    "Thank you for choosing MedPlus Care Pharmacy.\n\n" +
-                    "Best Regards,\n" +
-                    "MedPlus Care Pharmacy");
-
-            // attach pdfResult
-            Multipart multipart = new MimeMultipart();
-            MimeBodyPart attachmentPart = new MimeBodyPart();
-            attachmentPart.attachFile(pdfResult);
-            multipart.addBodyPart(attachmentPart);
-            message.setContent(multipart);
-
-            System.out.println("sending...");
-            // Send message
-            Transport.send(message);
-            System.out.println("Sent message successfully....");
-        } catch (MessagingException mex) {
-            mex.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void onKeyPressedAction(KeyEvent keyEvent) {
@@ -563,7 +412,7 @@ public class ReportFormController {
 
                 String reportId = selectedReport.getReportId();
                 String custId = selectedReport.getCustId();
-                String testId = selectedReport.getTestId();
+                String testId = testBO.getTestName(selectedReport.getTestId());
                 String result = selectedReport.getResult();
                 LocalDate issueDate = selectedReport.getIssueDate();
                 LocalDate pickUpDate = selectedReport.getPickupDate();
@@ -635,6 +484,7 @@ public class ReportFormController {
 
     private void searchCustomerByContactNumber() {
         String contactNumber = searchCustomer.getText().trim();
+        System.out.println("Contact Number: " + contactNumber);
         if (!contactNumber.isEmpty()) {
             try {
                 CustomerDTO customer = customerBO.searchCustomerByContact(contactNumber);

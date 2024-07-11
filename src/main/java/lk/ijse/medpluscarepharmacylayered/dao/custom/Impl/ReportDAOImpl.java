@@ -33,7 +33,7 @@ public class ReportDAOImpl implements ReportDAO {
 
     @Override
     public boolean add(Report entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute(null,"INSERT INTO Report VALUES (?,?,?,?,?)",
+        return SQLUtil.execute(null,"INSERT INTO Report (cust_id, test_id, result, issue_date, pickup_date) VALUES (?,?,?,?,?)",
                 entity.getCustId(),
                 entity.getTestId(),
                 entity.getResult(),
@@ -59,7 +59,11 @@ public class ReportDAOImpl implements ReportDAO {
 
     @Override
     public String generateNewID() throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute(null,"SELECT CONCAT('R', LPAD(next_id, 4, '0')) FROM AutoIncrement_Report");
+        ResultSet resultSet = SQLUtil.execute(null,"SELECT CONCAT('R', LPAD(next_id, 4, '0')) FROM AutoIncrement_Report");
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        return null;
     }
 
     @Override

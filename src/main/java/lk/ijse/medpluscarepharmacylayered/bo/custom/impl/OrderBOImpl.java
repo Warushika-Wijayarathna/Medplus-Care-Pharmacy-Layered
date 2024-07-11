@@ -10,8 +10,11 @@ import lk.ijse.medpluscarepharmacylayered.view.tm.ItemCartTm;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class OrderBOImpl implements OrderBO {
     OrderDAO orderDAO = (OrderDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.ORDER);
@@ -108,4 +111,25 @@ public class OrderBOImpl implements OrderBO {
     public String getOrderId() throws SQLException, ClassNotFoundException {
         return orderDAO.getOrderId();
     }
+
+    @Override
+    public String getDailySales(LocalDate today) throws SQLException, ClassNotFoundException {
+        return orderDAO.dailySales(today);
+    }
+
+    @Override
+    public String getMonthlySales(Month month, int year) throws SQLException, ClassNotFoundException {
+        return orderDAO.monthlySales(month, year);
+    }
+
+    @Override
+    public String getAnnualSales(int year) throws SQLException, ClassNotFoundException {
+        return orderDAO.annualSales(year);
+    }
+
+    @Override
+    public String getProfit(LocalDate today) throws SQLException, ClassNotFoundException {
+        return orderDAO.getProfit(today);
+    }
+
 }
